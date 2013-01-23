@@ -17,11 +17,13 @@
 			opacity: 0.80, /* Value between 0 and 1 */
 			show_title: true, /* true/false */
 			allow_resize: true, /* Resize the photos bigger than viewport. true/false */
+			allow_resize_icon: true, /* Show the resize icon to make the image bigger if bigger than viewport */
 			allow_expand: true, /* Allow the user to expand a resized image. true/false */
 			default_width: 500,
 			default_height: 344,
 			counter_separator_label: '/', /* The separator for the gallery counter 1 "of" 2 */
 			theme: 'pp_default', /* light_rounded / dark_rounded / light_square / dark_square / facebook */
+			image_extension: /\b(jpg|jpeg|png|gif)\b/gi,
 			horizontal_padding: 20, /* The padding on each side of the picture */
 			hideflash: false, /* Hides all the flash object on a page, set to TRUE if flash appears over prettyPhoto */
 			wmode: 'opaque', /* Set the flash wmode attribute */
@@ -520,11 +522,13 @@
 				if(isSet && _getFileType(pp_images[set_position])=="image") { $pp_pic_holder.find('.pp_hoverContainer').show(); }else{ $pp_pic_holder.find('.pp_hoverContainer').hide(); }
 			
 				if(settings.allow_expand) {
+				    if (settings.allow_expand_icon) {
 					if(pp_dimensions['resized']){ // Fade the resizing link if the image is resized
 						$('a.pp_expand,a.pp_contract').show();
 					}else{
 						$('a.pp_expand').hide();
 					}
+				    }
 				}
 				
 				if(settings.autoplay_slideshow && !pp_slideshow && !pp_open) $.prettyPhoto.startSlideshow();
@@ -760,7 +764,7 @@
 				currentGalleryPage = 0;
 				toInject = "";
 				for (var i=0; i < pp_images.length; i++) {
-					if(!pp_images[i].match(/\b(jpg|jpeg|png|gif)\b/gi)){
+				        if(!pp_images[i].match(settings.image_extension)) {
 						classname = 'default';
 						img_src = '';
 					}else{
