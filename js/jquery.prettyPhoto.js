@@ -18,7 +18,7 @@
 			opacity: 0.80, /* Value between 0 and 1 */
 			show_title: true, /* true/false */
 			allow_resize: true, /* Resize the photos bigger than viewport. true/false */
-			allow_resize_icon: true, /* Show the resize icon to make the image bigger if bigger than viewport */
+			allow_expand_icon: true, /* Show the resize icon to make the image bigger if bigger than viewport */
 			allow_expand: true, /* Allow the user to expand a resized image. true/false */
 			default_width: 500,
 			default_height: 344,
@@ -523,13 +523,13 @@
 				if(isSet && _getFileType(pp_images[set_position])=="image") { $pp_pic_holder.find('.pp_hoverContainer').show(); }else{ $pp_pic_holder.find('.pp_hoverContainer').hide(); }
 			
 				if(settings.allow_expand) {
-				    if (settings.allow_expand_icon) {
-					if(pp_dimensions['resized']){ // Fade the resizing link if the image is resized
-						$('a.pp_expand,a.pp_contract').show();
-					}else{
-						$('a.pp_expand').hide();
+					if (settings.allow_expand_icon) {
+						if(pp_dimensions['resized']){ // Fade the resizing link if the image is resized
+							$('a.pp_expand,a.pp_contract').show();
+						}else{
+							$('a.pp_expand').hide();
+						}
 					}
-				    }
 				}
 				
 				if(settings.autoplay_slideshow && !pp_slideshow && !pp_open) $.prettyPhoto.startSlideshow();
@@ -765,7 +765,7 @@
 				currentGalleryPage = 0;
 				toInject = "";
 				for (var i=0; i < pp_images.length; i++) {
-				        if(!pp_images[i].match(settings.image_extension)) {
+					if(!pp_images[i].match(settings.image_extension)) {
 						classname = 'default';
 						img_src = '';
 					}else{
