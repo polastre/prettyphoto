@@ -11,6 +11,7 @@
 	$.fn.prettyPhoto = function(pp_settings) {
 		pp_settings = jQuery.extend({
 			hook: 'rel', /* the attribute tag to use for prettyPhoto hooks. default: 'rel'. For HTML5, use "data-rel" or similar. */
+			images_hook: null, /* use an attribute for the list of image URLs */
 			animation_speed: 'fast', /* fast/slow/normal */
 			ajaxcallback: function() {},
 			slideshow: 5000, /* false OR interval time in ms */
@@ -153,10 +154,22 @@
 			isSet = (galleryRegExp.exec(theRel)) ? true : false;
 			
 			// Put the SRCs, TITLEs, ALTs into an array.
-			pp_images = (isSet) ? jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return $(n).attr('href'); }) : $.makeArray($(this).attr('href'));
-			pp_titles = (isSet) ? jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).find('img').attr('alt')) ? $(n).find('img').attr('alt') : ""; }) : $.makeArray($(this).find('img').attr('alt'));
-			pp_descriptions = (isSet) ? jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).attr('title')) ? $(n).attr('title') : ""; }) : $.makeArray($(this).attr('title'));
-			
+			if (isSet === true) {
+				if (settings.images_hook != null) {
+					var image_dict = $(this).data(settings.images_hook);
+					pp_images = image_dict.urls;
+					pp_titles = image_dict.titles;
+					pp_descriptions = image_dict.descriptions;
+				} else {
+					pp_images = jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return $(n).attr('href'); });
+					pp_titles = jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).find('img').attr('alt')) ? $(n).find('img').attr('alt') : ""; });
+					pp_descriptions = jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).attr('title')) ? $(n).attr('title') : ""; });
+				}
+			} else {
+				pp_images = $.makeArray($(this).attr('href'));
+				pp_titles = $.makeArray($(this).find('img').attr('alt'));
+				pp_descriptions = $.makeArray($(this).attr('title'));
+			}
 			if(pp_images.length > settings.overlay_gallery_max) settings.overlay_gallery = false;
 			
 			set_position = jQuery.inArray($(this).attr('href'), pp_images); // Define where in the array the clicked item is positionned
