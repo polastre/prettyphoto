@@ -9,7 +9,7 @@
 	$.prettyPhoto = {version: '3.1.5'};
 	
 	$.fn.prettyPhoto = function(pp_settings) {
-		pp_settings = jQuery.extend({
+		pp_settings = $.extend({
 			hook: 'rel', /* the attribute tag to use for prettyPhoto hooks. default: 'rel'. For HTML5, use "data-rel" or similar. */
 			images_hook: null, /* use an attribute for the list of image URLs */
 			animation_speed: 'fast', /* fast/slow/normal */
@@ -161,9 +161,9 @@
 					pp_titles = image_dict.titles;
 					pp_descriptions = image_dict.descriptions;
 				} else {
-					pp_images = jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return $(n).attr('href'); });
-					pp_titles = jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).find('img').attr('alt')) ? $(n).find('img').attr('alt') : ""; });
-					pp_descriptions = jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).attr('title')) ? $(n).attr('title') : ""; });
+					pp_images = $.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return $(n).attr('href'); });
+					pp_titles = $.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).find('img').attr('alt')) ? $(n).find('img').attr('alt') : ""; });
+					pp_descriptions = $.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).attr('title')) ? $(n).attr('title') : ""; });
 				}
 			} else {
 				pp_images = $.makeArray($(this).attr('href'));
@@ -172,7 +172,7 @@
 			}
 			if(pp_images.length > settings.overlay_gallery_max) settings.overlay_gallery = false;
 			
-			set_position = jQuery.inArray($(this).attr('href'), pp_images); // Define where in the array the clicked item is positionned
+			set_position = $.inArray($(this).attr('href'), pp_images); // Define where in the array the clicked item is positionned
 			rel_index = (isSet) ? set_position : $("a["+settings.hook+"^='"+theRel+"']").index($(this));
 			
 			_build_overlay(this); // Build the overlay {this} being the caller
